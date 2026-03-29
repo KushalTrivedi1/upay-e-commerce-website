@@ -1,0 +1,46 @@
+.App {
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: #2e7d32; /* green tone for NGO/eco feel */
+  color: white;
+  padding: 80px 20px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 3.5rem;
+}
+
+.header p {
+  font-size: 1.3rem;
+  margin: 10px 0;
+}
+
+.main-content {
+  padding: 60px 20px;
+}
+
+.main-content h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.explore-btn {
+  background-color: #0288d1;
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.3rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 30px;
+  transition: background-color 0.3s;
+}
+
+.explore-btn:hover {
+  background-color: #0277bd;
+}
