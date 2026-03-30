@@ -254,7 +254,7 @@ app.post('/api/login', async (req, res) => {
   }
   res.json({ 
     success: true, 
-    user: { name: foundUser.name, email: foundUser.email, role: foundUser.role, impactPoints: foundUser.impactPoints } 
+    user: { name: foundUser.name, phone: foundUser.phone, email: foundUser.email, role: foundUser.role, impactPoints: foundUser.impactPoints } 
   });
 } else {
   res.status(401).json({ success: false, message: "Invalid email or password" });
@@ -302,7 +302,7 @@ app.post('/api/register', async (req, res) => {
 
     res.status(201).json({ 
       success: true, 
-      user: { name: newUser.name, email: newUser.email, role: newUser.role, impactPoints: newUser.impactPoints } 
+      user: { name: newUser.name, phone: newUser.phone, email: newUser.email, role: newUser.role, impactPoints: newUser.impactPoints } 
     });
   } catch (err) {
     res.status(500).json({ success: false, message: "Failed to create account" });
