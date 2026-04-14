@@ -62,7 +62,7 @@ export default function App() {
   }, [categories]);
 
   const fetchProducts = () => {
-    fetch('http://localhost:5001/api/products')
+    fetch('https://upay-e-commerce-website.onrender.com/api/products')
       .then(res => res.json())
       .then(data => {
         const enrichedData = data.map(item => {
@@ -491,7 +491,7 @@ function ContactPage({ products }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch('http://localhost:5001/api/queries', {
+    const res = await fetch('https://upay-e-commerce-website.onrender.com/api/queries', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form)
@@ -763,7 +763,7 @@ function CartPage({ cart, setCart, donation, setDonation, updateQuantity, user }
           paymentMethod: method
         };
 
-        return fetch('http://localhost:5001/api/orders', {
+        return fetch('https://upay-e-commerce-website.onrender.com/api/orders', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(orderData)
@@ -802,7 +802,7 @@ function CartPage({ cart, setCart, donation, setDonation, updateQuantity, user }
       }
 
       // Step 2: Ask backend to create a Razorpay Order
-      const orderRes = await fetch("http://localhost:5001/api/razorpay/order", {
+      const orderRes = await fetch("https://upay-e-commerce-website.onrender.com/api/razorpay/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount: total })
@@ -824,7 +824,7 @@ function CartPage({ cart, setCart, donation, setDonation, updateQuantity, user }
         order_id: orderData.order.id,
         handler: async function (response) {
           // Step 4: Verify payment signature with the backend
-          const verifyRes = await fetch("http://localhost:5001/api/razorpay/verify", {
+          const verifyRes = await fetch("https://upay-e-commerce-website.onrender.com/api/razorpay/verify", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -1077,7 +1077,7 @@ function LoginPage({ setUser }) {
       return;
     }
 
-    const endpoint = isLogin ? 'http://localhost:5001/api/login' : 'http://localhost:5001/api/register';
+    const endpoint = isLogin ? 'https://upay-e-commerce-website.onrender.com/api/login' : 'https://upay-e-commerce-website.onrender.com/api/register';
     const payload = isLogin
       ? { email, password, role }
       : { name, phone, email, password, role };
@@ -1249,14 +1249,14 @@ function Dashboard({ user, setUser, products, setProducts, refreshProducts, cate
   // Fetch queries, orders, and vendor applications for admin/vendor roles
   useEffect(() => {
     if (user?.role === 'admin' || user?.role === 'vendor') {
-      fetch('http://localhost:5001/api/queries')
+      fetch('https://upay-e-commerce-website.onrender.com/api/queries')
         .then(res => res.json())
         .then(data => {
           if (user.role === 'admin') setQueries(data);
           else setQueries(data.filter(q => q.vendorEmail === user.email));
         });
 
-      fetch('http://localhost:5001/api/orders')
+      fetch('https://upay-e-commerce-website.onrender.com/api/orders')
         .then(res => res.json())
         .then(data => {
           if (user.role === 'admin') setOrders(data);
@@ -1264,7 +1264,7 @@ function Dashboard({ user, setUser, products, setProducts, refreshProducts, cate
         });
 
       if (user.role === 'admin') {
-        fetch('http://localhost:5001/api/applications')
+        fetch('https://upay-e-commerce-website.onrender.com/api/applications')
           .then(res => res.json())
           .then(data => setVendorList(data))
           .catch(err => console.error("Error fetching vendor applications:", err));
@@ -1276,7 +1276,7 @@ function Dashboard({ user, setUser, products, setProducts, refreshProducts, cate
   useEffect(() => {
     if (user?.role === 'customer') {
       setCustomerOrdersLoading(true);
-      fetch('http://localhost:5001/api/orders')
+      fetch('https://upay-e-commerce-website.onrender.com/api/orders')
         .then(res => res.json())
         .then(data => {
           const myOrders = data.filter(o =>
@@ -1306,7 +1306,7 @@ function Dashboard({ user, setUser, products, setProducts, refreshProducts, cate
     e.preventDefault();
     try {
       const payload = { ...newProduct, price: Number(newProduct.price), vendor: user.email };
-      const res = await fetch('http://localhost:5001/api/products', {
+      const res = await fetch('https://upay-e-commerce-website.onrender.com/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -1323,7 +1323,7 @@ function Dashboard({ user, setUser, products, setProducts, refreshProducts, cate
   const handleDeleteProduct = async (id) => {
     if (window.confirm("Are you sure you want to permanently delete this product?")) {
       try {
-        const res = await fetch(`http://localhost:5001/api/products/${id}`, { method: 'DELETE' });
+        const res = await fetch(`https://upay-e-commerce-website.onrender.com/api/products/${id}`, { method: 'DELETE' });
         if (res.ok) refreshProducts();
         else alert("Failed to delete from server.");
       } catch (err) {
@@ -1336,7 +1336,7 @@ function Dashboard({ user, setUser, products, setProducts, refreshProducts, cate
     const newStatus = currentStatus !== false;  // flip: false → true, true → false
     setProducts(products.map(p => p.id === id ? { ...p, inStock: !newStatus } : p));
     try {
-      await fetch(`http://localhost:5001/api/products/${id}`, {
+      await fetch(`https://upay-e-commerce-website.onrender.com/api/products/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ inStock: !newStatus })
@@ -1351,7 +1351,7 @@ function Dashboard({ user, setUser, products, setProducts, refreshProducts, cate
     const trimmedCat = newCategoryName.trim();
     if (trimmedCat && !categories.includes(trimmedCat)) {
       try {
-        await fetch('http://localhost:5001/api/categories', {
+        await fetch('https://upay-e-commerce-website.onrender.com/api/categories', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: trimmedCat })
@@ -1368,7 +1368,7 @@ function Dashboard({ user, setUser, products, setProducts, refreshProducts, cate
   const handleDeleteCategory = async (catToDelete) => {
     if (window.confirm(`Are you sure you want to permanently delete the category "${catToDelete}"?`)) {
       try {
-        await fetch(`http://localhost:5001/api/categories/${encodeURIComponent(catToDelete)}`, { method: 'DELETE' });
+        await fetch(`https://upay-e-commerce-website.onrender.com/api/categories/${encodeURIComponent(catToDelete)}`, { method: 'DELETE' });
       } catch (err) { console.error("Failed to delete from backend."); }
       setCategories(categories.filter(c => c !== catToDelete));
       setMsg(`Category "${catToDelete}" deleted!`);
@@ -1377,7 +1377,7 @@ function Dashboard({ user, setUser, products, setProducts, refreshProducts, cate
 
   const handleApproveVendor = async (vendorId) => {
     try {
-      const response = await fetch(`http://localhost:5001/api/vendors/${vendorId}/approve`, {
+      const response = await fetch(`https://upay-e-commerce-website.onrender.com/api/vendors/${vendorId}/approve`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' }
       });
@@ -1390,7 +1390,7 @@ function Dashboard({ user, setUser, products, setProducts, refreshProducts, cate
 
   const handleRejectVendor = async (vendorId) => {
     try {
-      const response = await fetch(`http://localhost:5001/api/applications/${vendorId}`, { method: 'DELETE' });
+      const response = await fetch(`https://upay-e-commerce-website.onrender.com/api/applications/${vendorId}`, { method: 'DELETE' });
       if (response.ok) {
         setVendorList(vendorList.filter(v => v.id !== vendorId && v._id !== vendorId));
         alert("Application Rejected!");
@@ -1401,7 +1401,7 @@ function Dashboard({ user, setUser, products, setProducts, refreshProducts, cate
   const handleUpdateOrderStatus = async (id, newStatus) => {
     setOrders(orders.map(o => o.id === id ? { ...o, status: newStatus } : o));
     try {
-      await fetch(`http://localhost:5001/api/orders/${id}`, {
+      await fetch(`https://upay-e-commerce-website.onrender.com/api/orders/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus })
@@ -1412,7 +1412,7 @@ function Dashboard({ user, setUser, products, setProducts, refreshProducts, cate
   const handleResolveQuery = async (id) => {
     setQueries(queries.map(q => q.id === id ? { ...q, status: 'Resolved' } : q));
     try {
-      await fetch(`http://localhost:5001/api/queries/${id}`, {
+      await fetch(`https://upay-e-commerce-website.onrender.com/api/queries/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'Resolved' })
@@ -1424,7 +1424,7 @@ function Dashboard({ user, setUser, products, setProducts, refreshProducts, cate
     if (!window.confirm("Are you sure you want to permanently delete this query?")) return;
     setQueries(queries.filter(q => q.id !== id));
     try {
-      await fetch(`http://localhost:5001/api/queries/${id}`, { method: 'DELETE' });
+      await fetch(`https://upay-e-commerce-website.onrender.com/api/queries/${id}`, { method: 'DELETE' });
     } catch (err) { console.error("Failed to delete query"); }
   };
 
@@ -2161,7 +2161,7 @@ function OrderCard({ order, statusLabels, statusColors, statusEmojis, statusInde
     setTrackLoading(true);
     setTrackError('');
     try {
-      const res = await fetch(`http://localhost:5001/api/orders/${order.id}`);
+      const res = await fetch(`https://upay-e-commerce-website.onrender.com/api/orders/${order.id}`);
       const data = await res.json();
       if (data.order) {
         setLiveOrder(data.order);
@@ -2370,7 +2370,7 @@ function OrderTrackingPage({ user }) {
     setError('');
     setOrder(null);
     try {
-      const res = await fetch(`http://localhost:5001/api/orders/${orderId.trim()}`);
+      const res = await fetch(`https://upay-e-commerce-website.onrender.com/api/orders/${orderId.trim()}`);
       const data = await res.json();
       if (data.order) {
         setOrder(data.order);
